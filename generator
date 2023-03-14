@@ -1,0 +1,52 @@
+# Online Registration Form for a Workshop
+# A Python program to demonstrate use of
+# generator object with next()
+
+
+
+# Define a generator function to receive and yield attendee names
+def get_attendee():
+    while True:
+        attendee_name = input("Enter attendee name in the format 'Lastname, Firstname': ")
+        if attendee_name:
+            yield attendee_name
+        else:
+            break
+
+# Create an empty list to store the attendees' names
+attendee_list = []
+
+# Prompt the user to enter attendee names and store them in the attendee_list
+print("Enter attendee names in the format 'Lastname, Firstname'. Press enter to stop.")
+for attendee_name in get_attendee():
+    attendee_list.append(attendee_name)
+
+# Define a function to assign schedules to attendees based on their last name
+def assign_schedule(attendee_list):
+    first_batch = []
+    second_batch = []
+    third_batch = []
+    fourth_batch = []
+
+    for attendee_name in attendee_list:
+        last_name = attendee_name.split(',')[0].strip().upper()
+        if last_name >= 'M' and last_name <= 'S':
+            first_batch.append(attendee_name)
+        elif last_name >= 'G' and last_name <= 'L':
+            second_batch.append(attendee_name)
+        elif last_name >= 'A' and last_name <= 'F':
+            third_batch.append(attendee_name)
+        elif last_name >= 'T' and last_name <= 'Z':
+            fourth_batch.append(attendee_name)
+
+    yield ("Monday, 10:30 am - 4:30 pm, Room M308", first_batch)
+    yield ("Wednesday, 1:30 pm - 7:30 pm, Room M307", second_batch)
+    yield ("Thursday, 8:30 am - 2:30 pm, Room M305", third_batch)
+    yield ("Friday, 3:30 pm - 9:30 pm, Room M306", fourth_batch)
+
+# Use the assign_schedule function to generate the schedules and attendees for each batch
+print("WORKSHOP SCHEDULE:")
+for schedule, attendees in assign_schedule(attendee_list):
+    print("\n" + schedule)
+    for attendee in attendees:
+        print("- " + attendee)
